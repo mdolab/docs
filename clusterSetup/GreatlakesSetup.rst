@@ -56,6 +56,7 @@ home directory on Great Lakes.
    # User specific aliases and functions
    alias j='squeue -u $USER'
    alias scr='cd /scratch/jrram_root/jrram/$USER'
+   alias billing='sreport -T billing cluster AccountUtilizationByUser Accounts=jrram1 Start=$(date '+%Y-%m-01') End=now'
 
 This file starts by specifying the preset modules you want to load.
 This is followed by a section setting the environment variables to allow the use of the MDOlab software.
@@ -133,3 +134,6 @@ Job Submission and Monitoring
 
 Jobs are submitted with ``sbatch batch_script``, and cancelled with ``scancel jobid``, where ``jobid`` can be found with ``squeue -u $USER``.
 To check the estimated starting time for your job, type ``squeue -j <job ID> --start``.
+To estimate the cost of your job, ``my_job_estimate <script name>``.
+To check how much money used on an account, ``sreport -T billing cluster AccountUtilizationByUser Accounts=<account name> Start=<date> End=<date>``. 
+A ``billing`` alias is shown in the above sample bashrc. The number needs to be divided by 100,000 to get the actual dollar amount used.
