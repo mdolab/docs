@@ -59,7 +59,7 @@ home directory on Great Lakes.
    # User specific aliases and functions
    alias squ='squeue -u $USER'
    alias sqj='squeue -A jrram1'
-   alias scr="cd $SCRATC"
+   alias scr="cd $SCRATCH"
    alias billing='sreport -T billing cluster AccountUtilizationByUser Accounts=jrram1 Start=$(date '+%Y-%m-01') End=now'
    alias utilization='sreport cluster Utilization -t percent End=$(date +%H:%M) Start=$(date +%H:%M -d "2 hours ago")'
 
