@@ -53,11 +53,22 @@ home directory on Great Lakes.
    export PATH=${PATH}:${HOME}/repos/tacs_orig/extern/f5totec
    export PATH=$PATH:$HOME/repos/cgnsutilities/bin
 
-   # User specific aliases and functions
-   alias j='squeue -u $USER'
-   alias scr='cd /scratch/jrram_root/jrram/$USER'
-   alias billing='sreport -T billing cluster AccountUtilizationByUser Accounts=jrram1 Start=$(date '+%Y-%m-01') End=now'
+   # Convenient env variables
+   export SCRATCH=/scratch/jrram_root/jrram1/$USER
 
+   # User specific aliases and functions
+   alias squ='squeue -u $USER'
+   alias sqj='squeue -A jrram1'
+   alias scr="cd $SCRATC"
+   alias billing='sreport -T billing cluster AccountUtilizationByUser Accounts=jrram1 Start=$(date '+%Y-%m-01') End=now'
+   alias utilization='sreport cluster Utilization -t percent End=$(date +%H:%M) Start=$(date +%H:%M -d "2 hours ago")'
+
+   alias debug8='srun --account=jrram1 --nodes=1 --ntasks-per-node=8 --mem-per-cpu=5GB --time=4:00:00 --partition=standard --cpus-per-task=1 --pty /bin/bash'
+   alias debug36='srun --account=jrram1 --nodes=1 --ntasks-per-node=36 --mem-per-cpu=5GB --time=4:00:00 --partition=standard --cpus-per-task=1 --pty /bin/bash'
+   alias debug72='srun --account=jrram1 --nodes=2 --ntasks-per-node=36 --mem-per-cpu=5GB --time=4:00:00 --partition=standard --cpus-per-task=1 --pty /bin/bash'   
+   alias debug108='srun --account=jrram1 --nodes=3 --ntasks-per-node=36 --mem-per-cpu=5GB --time=4:00:00 --partition=standard --cpus-per-task=1 --pty /bin/bash'
+
+   
 This file starts by specifying the preset modules you want to load.
 This is followed by a section setting the environment variables to allow the use of the MDOlab software.
 The last portion of the file specifies a series of aliases to make some standard operations easier.
