@@ -1,4 +1,4 @@
-.. Documentation of a basic setup on the stampede2 cluster.
+s.. Documentation of a basic setup on the stampede2 cluster.
    Note that the user is assumed to have already gotten an account
    setup, and has access to the login nodes on the cluster.
 
@@ -34,7 +34,14 @@ It is advised to install all the MDOlab code under ``$HOME/repos``. A few differ
 
 - :ref:`mpi4py <install_mpi4py>` is installed by default, but :ref:`petsc4py <install_petsc4py>` still needs to be installed. Do a user install for all required python packages.
 
+- If you have issues compiling CGNS 3.3.0, check ``CMAKE_C_COMPILER:FILEPATH`` and ``CMAKE_FORTRAN_COMPILER:FILEPATH`` in ``CMakeCache.txt`` file. It's likely that CGNS gets compiled with some random old version of gcc stored in ``/bin/``, and to compile it correctly, remove your old install and set the environment variables ``export CC=path/to/icc`` and ``export FC=path/to/ifort``. Those paths can be found by typing which icc and which ifort.
+
+- Another notice on the intell installs is that the ``config.mk`` files are out of date. With new intel compilers, the actual mpi-wrapped compilers changed names. Check out the compilers_, and modify the ``FF90`` and ``CC`` options in ``config.mk`` files as needed.
+
+.. _compilers: https://software.intel.com/en-us/mpi-developer-reference-linux-compilation-commands
+
 - When compiling TACS, make the following modification in Makefile.in before compiling: ``LAPACK_LIBS = -mkl``.
+
 
 Example .bashrc
 ------------------
