@@ -344,9 +344,11 @@ Here are some notes for configuring below, or you can jump ahead to the configur
       `diff <https://bugs.debian.org/cgi-bin/bugreport.cgi?att=1;bug=890271;filename=libcgns.diff;msg=5>`_.
 
 
-      **Optional**: If you compiled with the CGNS_BUILD_CGNSTOOLS flag ON you
+      **Optional**: If you compiled with ``-DCGNS_BUILD_CGNSTOOLS = 1`` you
       either need to add the binary path to your PATH environmental variable or
-      you can install the binaries system wide. 
+      you can install the binaries system wide. By specifying the installation prefix 
+      as shown in the later example configure commands, the binary path is in your PATH environmental variables; 
+      without specifying the prefix, the default is a system path, which requires sudo.
 
    - When compiling on a cluster, it helps to set ``-DCGNS_BUILD_CGNSTOOLS = 0``. 
       It will build without the cgnstools which requires additional packages.
@@ -354,8 +356,7 @@ Here are some notes for configuring below, or you can jump ahead to the configur
    - If you use intel compilers:
       Check ``CMAKE_C_COMPILER:FILEPATH`` and ``CMAKE_FORTRAN_COMPILER:FILEPATH`` in ``CMakeCache.txt`` 
       file after you configure the package. It's likely that CGNS gets compiled with some random old version of gcc stored in ``/bin/``. 
-      If they are incorrect, to compile it correctly, remove your old install and set the environment variables ``export CC=path/to/icc`` and ``export FC=path/to/ifort``. 
-      Those paths can be found by typing which icc and which ifort.
+      If they are incorrect, to compile it correctly, remove your old install and set the environment variables ``export CC=$(which icc)`` and ``export FC=$(which ifort)``. 
 
 
       Another notice on the intel installs is that the ``config.mk`` files are out of date. 
@@ -381,9 +382,6 @@ Finally, build and install::
 
    $ make all install
 
-To install the binaries system wide, issue the command::
-
-   $ sudo make install
 
 Python Packages
 ---------------
