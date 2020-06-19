@@ -90,27 +90,29 @@ Lastly, to build and install the Python interface, type::
 
    pip install .
 
+If you are developing code, we recommend using the ``-e`` option, e.g. ``pip install -e .`` so that you do not need to install each time you modify the Python code.
+
 
 Example ``.bashrc``
 *******************
-After installing the above software you should have a ``.bashrc`` file that is close to the example shown here below
+After installing the above software you should have something similar to the following somewhere in your ``~/.bashrc`` file
 
 .. code-block:: bash
 
-	# filename: .bashrc
-
-	# PETSc ARCH and DIR
-	export PETSC_DIR=$HOME/packages/petsc-3.7.7
+	# -- PETSc
+	export PETSC_DIR=$HOME/packages/petsc-<x.y.z>
 	export PETSC_ARCH=real-debug
 
-	# Library Path for MPI
-	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PETSC_DIR/$PETSC_ARCH/lib
+	# -- OpenMPI Installation
+	export MPI_INSTALL_DIR=$HOME/packages/openmpi-<x.y.z>/opt-gfortran
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MPI_INSTALL_DIR/lib
+	export PATH=$MPI_INSTALL_DIR/bin:$PATH
 
-	# Path for MPI -- configuration with MPI
-	export PATH=$PETSC_DIR/$PETSC_ARCH/bin:$PATH
-	export PATH=$PETSC_DIR/$PETSC_ARCH/include:$PATH
+	# -- CGNS
+	export CGNS_HOME=$HOME/packages/CGNS-<x.y.z>/opt-gfortran
+	export PATH=$PATH:$CGNS_HOME/bin
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CGNS_HOME/lib
 
-	# LD Library paths
-	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/repos/pyoptsparse/pyoptsparse/pyIPOPT/Ipopt/lib
-	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/packages/cgnslib_3.2.1/src
+	# -- MDO Lab
+	export PATH=$PATH:$HOME/repos/cgnsutilities/bin
 
