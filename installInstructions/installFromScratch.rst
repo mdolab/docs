@@ -115,4 +115,4 @@ After installing the above software you should have something similar to the fol
 
 	# -- MDO Lab
 	export PATH=$PATH:$HOME/repos/cgnsutilities/bin
-
+	# export PYTHONPATH=$PYTHONPATH:$HOME/repos  # only if you are not installing all packages using pip
