@@ -37,6 +37,7 @@ home directory on Great Lakes.
    module load openmpi/4.0.2
    module load cmake/3.13.2
    module load mkl/2018.0.4
+   module load git
 
 
    # add the repos directory to your python path so that the mdolab modules will be available
