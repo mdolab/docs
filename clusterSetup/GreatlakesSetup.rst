@@ -162,5 +162,5 @@ To build PETSc on Greatlakes, you need to load ``mkl`` first, and specify the bl
 .. code-block:: bash
 
    ./configure --with-shared-libraries --download-superlu_dist --download-parmetis=yes --download-metis=yes    --with-fortran-bindings=1 \
-   --with-debugging=0 --with-scalar-type=real --PETSC_ARCH=$PETSC_ARCH --with-cxx-dialect=C++11 --with-mpi-dir=$MPI_HOME COPTFLAGS='-O3 ' CXXOPTFLAGS='-O3 ' FOPTFLAGS='-O3 ' \
-   --CFLAGS='-fPIC' --CXXFLAGS='-fPIC' --FFLAGS='-fPIC'    --with-blas-lapack-lib=" -Wl,--start-group ${MKL_LIB}/libmkl_intel_lp64.a ${MKL_LIB}/libmkl_sequential.a ${MKL_LIB}/libmkl_core.a -Wl,--end-group -lpthread -lm -ldl"
+   --with-debugging=0 --with-scalar-type=real --PETSC_ARCH=$PETSC_ARCH --with-cxx-dialect=C++11 --with-mpi-dir=$MPI_HOME COPTFLAGS='-O3' CXXOPTFLAGS='-O3' FOPTFLAGS='-O3' \
+   --CFLAGS='-fPIC' --CXXFLAGS='-fPIC' --FFLAGS='-fPIC' --with-blas-lapack-lib=" -Wl,--start-group ${MKL_LIB}/libmkl_intel_lp64.a ${MKL_LIB}/libmkl_sequential.a ${MKL_LIB}/libmkl_core.a -Wl,--end-group -lpthread -lm -ldl"
