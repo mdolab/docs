@@ -385,7 +385,7 @@ Finally, build and install::
 `SWIG (optional) <https://github.com/swig/swig>`_ 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-SWIG is a wrapper for external software written in C or C++. It is an **OPTIONAL** component for MACH-Aero, as it is required by only some of its sub-modules (eg. NSGA2 and NOMAD optimizers used by pyOptSparse, as discussed `here <http://mdolab.engin.umich.edu/docs/packages/pyoptsparse/doc/install.html>`_). 
+SWIG is a wrapper for external software written in C or C++. It is an **OPTIONAL** component for MACH-Aero, as it is required by only some of its sub-modules (eg. NSGA2 and NOMAD optimizers used by pyOptSparse, as discussed `here <https://mdolab-pyoptsparse.readthedocs-hosted.com/en/latest/install.html>`_). 
 
 .. WARNING:: 
 
@@ -398,7 +398,7 @@ Download and unpack the source files, from your packages directory:
    cd $HOME/packages
    wget http://prdownloads.sourceforge.net/swig/swig-2.0.12.tar.gz
    tar -xzf swig-2.0.12.tar.gz
-   cd /swig-2.0.12
+   cd ./swig-2.0.12
 
 Configure your environment variables by adding the following lines to your ``.bashrc`` file, remembering to ``source ~/.bashrc`` or opening a new terminal once you saved the changes:
 
@@ -411,7 +411,7 @@ Then configure SWIG and build the binaries using the following commands:
 
 .. code-block:: bash
 
-   ./configure --prefix=$SWIG_HOME/
+   ./configure --prefix=$SWIG_HOME
    make
    make install
 
