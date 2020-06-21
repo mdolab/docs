@@ -397,7 +397,7 @@ Download and unpack the source files, from your packages directory:
 
    cd $HOME/packages
    wget http://prdownloads.sourceforge.net/swig/swig-2.0.12.tar.gz
-   tar -xzf swig-swig-2.0.12.tar.gz
+   tar -xzf swig-2.0.12.tar.gz
    cd /swig-2.0.12
 
 Configure your environment variables by adding the following lines to your ``.bashrc`` file, remembering to ``source ~/.bashrc`` or opening a new terminal once you saved the changes:
