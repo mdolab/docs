@@ -380,6 +380,44 @@ Finally, build and install::
 
    $ make all install
 
+.. _install_swig:
+
+`SWIG <https://github.com/swig/swig>`_
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+SWIG is a wrapper for external software written in C or C++. It is required by some of the modules part of MACH-Aero (eg. NSGA2 and NOMAD optimizers used by pyOptSparse, as discussed `here <http://mdolab.engin.umich.edu/docs/packages/pyoptsparse/doc/install.html>`_). 
+
+.. NOTE:: 
+
+   Swig 2.0.12 is the currently supported version. You can install a different version at your own risk, changing the following command lines accordingly.
+
+Download and unpack the source directory, from your packages directory:
+
+.. code-block:: bash
+
+   cd $HOME/packages
+   wget http://prdownloads.sourceforge.net/swig/swig-2.0.12.tar.gz
+   tar -xzf swig-swig-2.0.12.tar.gz
+   cd /swig-2.0.12
+
+Configure your environment variables by adding the following lines to your `.bashrc` file, remembering to `bash source` or opening anew terminal once you saved the changes:
+
+.. code-block:: bash
+
+   export SWIG_HOME=$HOME/packages/swig-2.0.12
+   export PATH=$PATH:$SWIG_HOME/bin
+
+Then configure Swig and build the binaries using the following commands:
+
+.. code-block:: bash
+
+   ./configure --prefix=$SWIG_HOME/
+   make
+   make install
+
+.. NOTE::
+
+   The configuration and build of Swig requires the `PCRE developer package <https://www.pcre.org/>`_. If not already present on your system, you can install it via ``sudo apt-get install libpcre3 libpcre3-dev``
 
 Python Packages
 ---------------
