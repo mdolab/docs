@@ -420,7 +420,7 @@ Then configure SWIG and build the binaries using the following commands:
 
 .. NOTE::
 
-   The configuration and build of SWIG requires the `PCRE developer package <https://www.pcre.org/>`_. If not already present on your system, you can install it via ``sudo apt-get install libpcre3 libpcre3-dev``
+   The configuration and build of SWIG requires the `PCRE developer package <https://www.pcre.org/>`_. If not already present on your system, you can install it via ``sudo apt-get install libpcre3 libpcre3-dev``. Try running ``swig`` in the terminal and, if met with the error ``swig: error while loading shared libraries: libpcre.so.1: cannot open shared object file: No such file or directory`` run ``sudo ln -s /lib/x86_64-linux-gnu/libpcre.so.3 /lib/x86_64-linux-gnu/libpcre.so.1``
 
 Python Packages
 ---------------
