@@ -54,7 +54,7 @@ As you will use Intel compilers, you **must** set the compilers path by using th
    export CC=$(which icc)
    export FC=$(which ifort)
 
-If you forget to do so, the build will apparently succeed but you will not be able to use or import cgns with any of our tools, as the library will point to a default, non-existing compiler.
+If you forget to do so, the build will apparently succeed but you will not be able to use or import ``cgns`` with any of our tools, as the library will point to a default, non-existing compiler.
 
 Example .bashrc
 ------------------
@@ -121,6 +121,10 @@ Running Jobs
 ------------
 Stampede2 uses Slurm rather than PBS (Moab or Torque). Also note that, it is generally advised to use SKX nodes rather than KNL for running MDO Lab code, as they are more optimized for those architectures.
 
+.. NOTE ::
+
+   Your jobs will most likely stay in the queue from several hours up to a day, depending on the resources you are requesting. We do not have specific tips in this sense, except for what already reported in the User guide. Don't ask for more resources than you actually need! You can get a glimpse of Stampede 2 current usage on this `system monitor <https://portal.tacc.utexas.edu/system-monitor>`_.
+
 Example run script:
 
 .. code-block:: bash
@@ -144,6 +148,10 @@ Example run script:
     # Launch MPI code...
 
     ibrun -n 240 python myscript.py   # ibrun is used instead of mpirun/mpiexec on stampede
+
+.. TIP ::
+
+   Interactive jobs are a useful resource. There is only a time limit (120 mins) and you can request a high number of nodes. The queue time varies from few seconds to few minutes. Although it is not recommended to use these jobs for production (unless, for example, you have to run a set of quick ADflow runs), it is **strongly** recommended to test your run scripts here before you submit a regular job. You don't want to wait a day for your job to start and then have it crashing after a few seconds for some trivial coding mistake.
 
 .. TODO : short guide for $HOME, $WORK, $SCRATCH
 .. TODO : link to system monitor? https://portal.tacc.utexas.edu/system-monitor
