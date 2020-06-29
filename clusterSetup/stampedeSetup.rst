@@ -34,8 +34,12 @@ Home, Work and Scratch directories
 
 Similarly to Great Lakes and other HPCs, you can access different file systems from your Stampede account. To learn more about the different directory, read `this section <https://portal.tacc.utexas.edu/user-guides/stampede2#overview-filesystems>`_ of the user guide.
 
-Use ``$HOME`` for ``pakages`` and ``repos`` folders.
-For our typical production jobs, with relatively limited memory and file I/O usage, it is fine to use the ``$WORK`` directory. It has a 1TB limit but it is never purged, while ``$SCRATCH`` has no memory limit but any file that is not executed or modified for more than 10 days will be deleted.
+Use ``$HOME`` for ``packages`` and ``repos`` folders.
+For our typical production jobs, with relatively limited storage and file I/O usage, it is fine to use the ``$WORK`` directory. It has a 1TB limit but it is never purged, while ``$SCRATCH`` has no storage limit but any file that is not executed or modified for more than 10 days will be deleted.
+
+.. WARNING ::
+
+   ``$SCRATCH`` purge might occur after more than 10 days but you will not be warned in advance, so be extra careful.
 
 .. TIP ::
 
@@ -73,7 +77,8 @@ As you will use Intel compilers, you **must** set the compilers path by using th
    export CC=$(which icc)
    export FC=$(which ifort)
 
-If you forget to do so, the build will apparently succeed but you will not be able to use or import ``cgns`` with any of our tools, as the library will point to a default, non-existing compiler.
+CGNS will by default compile using the default ``/usr/bin/gcc``, which is not part of a specific module. This hard-coded path will most likely generate issues, as the rest of the code will be compiled by a different compiler. Setting the path as done above ensures that the compiler choice is consistent between CGNS and our codes, avoiding disruptive incompatibilities.
+
 
 Example .bashrc
 ------------------
@@ -97,16 +102,10 @@ Environmental variables are placed in the if block under section 2:
    export PETSC_DIR=$HOME/packages/<PETSC LOCATION>
    export PETSC_ARCH=real-opt-intel
 
-   # Library Path for MPI (only needed if you are compiling PETSc)
-   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PETSC_DIR/$PETSC_ARCH/lib
-
    # -- CGNS
    export CGNS_HOME=$HOME/packages/CGNS-3.3.0/opt-gfortran
    export PATH=$PATH:$CGNS_HOME/bin
    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CGNS_HOME/lib
-
-   # Path for repos directories
-   export PYTHONPATH=$PYTHONPATH:$HOME/repos/
 
    # Path for cgns utilities
    export PATH=:$HOME/repos/cgnsutilities/bin/:$PATH
@@ -134,7 +133,7 @@ Adjust directory names as needed. If you want to use the PETSc already compiled 
 
 Running Jobs
 ------------
-Stampede2 uses Slurm rather than PBS (Moab or Torque). Also note that, it is generally advised to use SKX nodes rather than KNL for running MDO Lab code, as they are more optimized for those architectures.
+Stampede2 uses Slurm as job scheduler. It is generally advised to use SKX nodes rather than KNL for running MDO Lab code, as they are more optimized for those architectures.
 
 .. NOTE ::
 
