@@ -11,6 +11,11 @@ This guide is intended to help users get setup with the MDO Lab software on the 
 https://portal.xsede.org
 
 Once you have your XSEDE username setup, ask Prof. Martins to add you to the relevant allocation on XSEDE and confirm that you can log into the resource.
+Follow the email instructions to gain access to TACC system with your new alphanumerical username and set up the login authentication system (more info `here <https://portal.tacc.utexas.edu/tutorials/multifactor-authentication>`_).
+
+.. NOTE ::
+
+   It is strongly recommended to go through `Stampede 2 user guide <https://portal.tacc.utexas.edu/user-guides/stampede2>`_ before you start operating on your account
 
 Connecting to the TACC servers
 ------------------------------
@@ -28,24 +33,35 @@ Setting up MDO Lab software
 ---------------------------
 For most cluster setups, you need to follow the basic steps outlined in :ref:`installFromScratch`.
 
-It is advised to install all the MDOlab code under ``$HOME/repos``. A few differences to note:
+It is advised to install all the MDO Lab code under ``$HOME/repos``. A few differences to note:
 
-- :ref:`PETSc/MPI <install_petsc>` has already been compiled, so it's possible to omit them during the installation process, and load the required modules with, say, ``module load petsc/3.7``
+- :ref:`PETSc/MPI <install_petsc>` has already been compiled, so it's possible to omit them during the installation process, and load the required modules with, say, ``module load petsc/3.11``
 
 - :ref:`mpi4py <install_mpi4py>` is installed by default, but :ref:`petsc4py <install_petsc4py>` still needs to be installed. Do a user install for all required python packages.
 
 - When compiling TACS, make the following modification in Makefile.in before compiling: ``LAPACK_LIBS = -mkl``.
 
+Install CGNS
+~~~~~~~~~~~~
+.. TODO: add notes on the install with export CC FC
+
 Example .bashrc
 ------------------
-Load the correct modules in section 1, `within the if statement`
+Load the correct modules in section 1, `within the if statement`, following the instructions on the default file in your ``$HOME`` directory.
 
 .. code-block:: bash
 
-   module load git
-   module load intel/17.0.4
-   module load python/2.7.13
-   module load petsc/3.7              # If you want to use pre-compiled PETSc
+   module load git/2.24.1
+   module load intel/18.0.2
+   module load petsc/3.11              # If you want to use pre-compiled PETSc
+
+.. WARNING :: 
+
+   Load a specific Python module only if you intend to use it. Having multiple python versions loaded (even if one is Python 2.x and the other is Python 3.x) can lead to ``$PYTHONPATH`` and packages conflicts.
+
+.. WARNING ::
+
+   In case you encounter ``mkl`` errors like ``Intel MKL FATAL ERROR: Cannot load libmkl_avx512.so or libmkl_def.so.``, there is most likely some issue with PETSc and ``petsc4py``. It is recomended to install petsc4py locally using `these instructions <https://petsc4py.readthedocs.io/en/stable/install.html>`_ (files downloadable from the `Bitbucket repo <https://bitbucket.org/petsc/petsc4py/downloads/>`_), so you can test ``petsc4py`` locally. Try different PETSc versions in case the error persists.
 
 Environmental variables are placed in the if block under section 2:
 
@@ -58,8 +74,10 @@ Environmental variables are placed in the if block under section 2:
    # Library Path for MPI (only needed if you are compiling PETSc)
    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PETSC_DIR/$PETSC_ARCH/lib
 
-   # Library Path for CGNSlib
-   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/packages/cgnslib_3.2.1/src
+   # -- CGNS
+   export CGNS_HOME=$HOME/packages/CGNS-3.3.0/opt-gfortran
+   export PATH=$PATH:$CGNS_HOME/bin
+   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CGNS_HOME/lib
 
    # Path for repos directories
    export PYTHONPATH=$PYTHONPATH:$HOME/repos/
@@ -78,19 +96,25 @@ Lastly, the aliases are placed under section 3.
    alias emn='emacs -nw'
    alias jstat='scontrol show job'
    alias iknl='idev -n 68 -N 1 -m 120 -A TG-DDM140001'
-   alias iskx='idev -p skx-dev -n 196 -N 4 -m 120 -A TG-DDM140001'
+   alias iskx='idev -p skx-dev -n 48 -N 1 -m 120 -A TG-DDM140001'
    alias myqq='showq -u'
+   alias strtime='squeue --start -j'  # <jobID>, check estimated startime of your job
 
-Adjust directory names as needed. If you want to use the PETSc already compiled on stampede2, then you need to have ``module load petsc/3.7`` as mentioned above, and you no longer need the first three export statements.
+Adjust directory names as needed. If you want to use the PETSc already compiled on stampede2, then you need to have ``module load petsc/3.11`` as mentioned above, and you no longer need the first three export statements.
+
+.. NOTE ::
+
+   ``TG-DDM140001`` refers to the MDO Lab allocation, it is not related to your specific user. You should not modify it unless you are accessing to another specific allocation.
 
 Running Jobs
 ------------
-Stampede2 uses Slurm rather than PBS (Moab or Torque). Also note that, it is generally advised to use SKX nodes rather than KNL for running MDOlab code, as they are more optimized for those architectures.
+Stampede2 uses Slurm rather than PBS (Moab or Torque). Also note that, it is generally advised to use SKX nodes rather than KNL for running MDO Lab code, as they are more optimized for those architectures.
 
 Example run script:
 
 .. code-block:: bash
-
+    
+    #!/bin/bash
     #SBATCH -J job_name        # Job name
     #SBATCH -o myjob.o%j       # Name of stdout output file
     #SBATCH -e myjob.e%j       # Name of stderr error file
@@ -108,4 +132,9 @@ Example run script:
 
     # Launch MPI code...
 
-    ibrun python myscript.py   # ibrun is used instead of mpirun/mpiexec on stampede
+    ibrun -n 240 python myscript.py   # ibrun is used instead of mpirun/mpiexec on stampede
+
+.. TODO : short guide for $HOME, $WORK, $SCRATCH
+.. TODO : link to system monitor? https://portal.tacc.utexas.edu/system-monitor
+.. TODO : add file backup tips
+.. TODO : using transfer nodes
