@@ -11,7 +11,6 @@ This guide is intended to help users get setup with the MDO Lab software on the 
 https://portal.xsede.org
 
 Once you have your XSEDE username setup, ask Prof. Martins to add you to the relevant allocation on XSEDE and confirm that you can log into the resource.
-Follow the email instructions to gain access to TACC system with your new alphanumerical username and set up the login authentication system (more info `here <https://portal.tacc.utexas.edu/tutorials/multifactor-authentication>`_).
 
 .. NOTE ::
 
@@ -19,15 +18,14 @@ Follow the email instructions to gain access to TACC system with your new alphan
 
 Connecting to the TACC servers
 ------------------------------
-
-Read this article for instructions on accessing XSEDE resources for the single sign on hub.
-https://portal.xsede.org/documentation-overview#access
-
-Alternatively, you can directly ``ssh`` into stampede2 using
-
-::
+You can directly ``ssh`` into stampede2 using::
 
    ssh username@stampede2.tacc.utexas.edu
+
+Make sure to set up the multifactor authentication first (more info `here <https://portal.tacc.utexas.edu/tutorials/multifactor-authentication>`_).
+
+Alternatively, read `this article <https://portal.xsede.org/documentation-overview#access>`_ for instructions on accessing XSEDE resources for the single sign on hub.
+Using the XSEDE login allows you to use DUO two-factor authentication instead of using a dedicated app for TACC.
 
 Home, Work and Scratch directories
 ----------------------------------
@@ -107,7 +105,7 @@ Environmental variables are placed in the if block under section 2:
    export PATH=$PATH:$CGNS_HOME/bin
    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CGNS_HOME/lib
 
-   # # Path for repos directories - uncomment if not using pip to install MDO Lab codes
+   # Path for repos directories - uncomment if not using pip to install MDO Lab codes
    # export PYTHONPATH=$PYTHONPATH:$HOME/repos/
 
    # Path for cgns utilities
