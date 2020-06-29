@@ -107,6 +107,9 @@ Environmental variables are placed in the if block under section 2:
    export PATH=$PATH:$CGNS_HOME/bin
    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CGNS_HOME/lib
 
+   # # Path for repos directories - uncomment if not using pip to install MDO Lab codes
+   # export PYTHONPATH=$PYTHONPATH:$HOME/repos/
+
    # Path for cgns utilities
    export PATH=:$HOME/repos/cgnsutilities/bin/:$PATH
    export PATH=:${HOME}/.local/bin:${PATH}
