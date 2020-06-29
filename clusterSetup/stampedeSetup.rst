@@ -15,7 +15,7 @@ Follow the email instructions to gain access to TACC system with your new alphan
 
 .. NOTE ::
 
-   It is strongly recommended to go through `Stampede 2 user guide <https://portal.tacc.utexas.edu/user-guides/stampede2>`_ before you start operating on your account
+   It is strongly recommended to go through the `Stampede 2 user guide <https://portal.tacc.utexas.edu/user-guides/stampede2>`_ before you start operating on your account
 
 Connecting to the TACC servers
 ------------------------------
@@ -29,17 +29,36 @@ Alternatively, you can directly ``ssh`` into stampede2 using
 
    ssh username@stampede2.tacc.utexas.edu
 
+Home, Work and Scratch directories
+----------------------------------
+
+Similarly to Great Lakes and other HPCs, you can access different file systems from your Stampede account. To learn more about the different directory, read `this section <https://portal.tacc.utexas.edu/user-guides/stampede2#overview-filesystems>`_ of the user guide.
+
+Use ``$HOME`` for ``pakages`` and ``repos`` folders.
+For our typical production jobs, with relatively limited memory and file I/O usage, it is fine to use the ``$WORK`` directory. It has a 1TB limit but it is never purged, while ``$SCRATCH`` has no memory limit but any file that is not executed or modified for more than 10 days will be deleted.
+
+.. TIP ::
+
+   It is good practice to always download or backup your output files as soon as the job is completed.
+
+.. TODO : add file backup tips
+.. TODO : using transfer nodes
+
 Setting up MDO Lab software
 ---------------------------
 For most cluster setups, you need to follow the basic steps outlined in :ref:`installFromScratch`.
 
-It is advised to install all the MDO Lab code under ``$HOME/repos``. A few differences to note:
+Again, it is advised to install all the MDO Lab code under ``$HOME/repos``. A few differences to note:
 
 - :ref:`PETSc/MPI <install_petsc>` has already been compiled, so it's possible to omit them during the installation process, and load the required modules with, say, ``module load petsc/3.11``
 
 - :ref:`mpi4py <install_mpi4py>` is installed by default, but :ref:`petsc4py <install_petsc4py>` still needs to be installed. Do a user install for all required python packages.
 
 - When compiling TACS, make the following modification in Makefile.in before compiling: ``LAPACK_LIBS = -mkl``.
+
+.. WARNING ::
+
+   In case you encounter ``mkl`` errors like ``Intel MKL FATAL ERROR: Cannot load libmkl_avx512.so or libmkl_def.so.`` when running any of our runscripts, there is most likely some issue with PETSc and ``petsc4py``. It is recomended to install ``petsc4py`` locally using `these instructions <https://petsc4py.readthedocs.io/en/stable/install.html>`_ (files downloadable from the `Bitbucket repo <https://bitbucket.org/petsc/petsc4py/downloads/>`_), so you can test ``petsc4py`` locally. Try different PETSc versions in case the error persists.
 
 Install CGNS
 ~~~~~~~~~~~~
@@ -69,10 +88,6 @@ Load the correct modules in section 1, `within the if statement`, following the 
 .. WARNING :: 
 
    Load a specific Python module only if you intend to use it. Having multiple python versions loaded (even if one is Python 2.x and the other is Python 3.x) can lead to ``$PYTHONPATH`` and packages conflicts.
-
-.. WARNING ::
-
-   In case you encounter ``mkl`` errors like ``Intel MKL FATAL ERROR: Cannot load libmkl_avx512.so or libmkl_def.so.``, there is most likely some issue with PETSc and ``petsc4py``. It is recomended to install petsc4py locally using `these instructions <https://petsc4py.readthedocs.io/en/stable/install.html>`_ (files downloadable from the `Bitbucket repo <https://bitbucket.org/petsc/petsc4py/downloads/>`_), so you can test ``petsc4py`` locally. Try different PETSc versions in case the error persists.
 
 Environmental variables are placed in the if block under section 2:
 
@@ -151,9 +166,4 @@ Example run script:
 
 .. TIP ::
 
-   Interactive jobs are a useful resource. There is only a time limit (120 mins) and you can request a high number of nodes. The queue time varies from few seconds to few minutes. Although it is not recommended to use these jobs for production (unless, for example, you have to run a set of quick ADflow runs), it is **strongly** recommended to test your run scripts here before you submit a regular job. You don't want to wait a day for your job to start and then have it crashing after a few seconds for some trivial coding mistake.
-
-.. TODO : short guide for $HOME, $WORK, $SCRATCH
-.. TODO : link to system monitor? https://portal.tacc.utexas.edu/system-monitor
-.. TODO : add file backup tips
-.. TODO : using transfer nodes
+   Interactive jobs are a useful resource. There is only a time limit (120 minutes) and you can request a high number of nodes. The queue time varies from few seconds to few minutes. Although it is not recommended to use these jobs for production (unless, for example, you have to run a set of quick ADflow runs), it is **strongly** recommended to test your run scripts here before you submit a regular job. You don't want to wait a day for your job to start and then have it crashing after a few seconds for some trivial coding mistake.
