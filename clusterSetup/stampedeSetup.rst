@@ -43,7 +43,18 @@ It is advised to install all the MDO Lab code under ``$HOME/repos``. A few diffe
 
 Install CGNS
 ~~~~~~~~~~~~
-.. TODO: add notes on the install with export CC FC
+
+The CGNS Library cannot be imported as a module in Stampede. You can refer to `this section of the docs <http://mdolab.engin.umich.edu/docs/installInstructions/install3rdPartyPackages.html#install-cgns>`_ for the installation procedure.
+
+Be careful to set ``-DCGNS_BUILD_CGNSTOOLS = 0`` to skip the installation of cgnstools.
+As you will use Intel compilers, you **must** set the compilers path by using these commands before configuring the build:
+
+.. code-block :: bash
+
+   export CC=$(which icc)
+   export FC=$(which ifort)
+
+If you forget to do so, the build will apparently succeed but you will not be able to use or import cgns with any of our tools, as the library will point to a default, non-existing compiler.
 
 Example .bashrc
 ------------------
