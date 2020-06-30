@@ -43,6 +43,13 @@ For our typical production jobs, with relatively limited storage and file I/O us
 
    It is good practice to always download or backup your output files as soon as the job is completed.
 
+Data transfer
+~~~~~~~~~~~~~
+
+You can use `Globus <https://portal.xsede.org/data-management>`_ for data management and transfer. 
+Conversely, you can use ` scp <https://portal.tacc.utexas.edu/user-guides/stampede2#transferring-scp>`_ from the terminal window.
+For ``PuTTY`` users, this `PSFTP tutorial <https://www.ssh.com/ssh/putty/putty-manuals/0.68/Chapter6.html>`_ can be useful.
+
 .. TODO : add file backup tips
 .. TODO : using transfer nodes
 
@@ -52,7 +59,7 @@ For most cluster setups, you need to follow the basic steps outlined in :ref:`in
 
 Again, it is advised to install all the MDO Lab code under ``$HOME/repos``. A few differences to note:
 
-- :ref:`PETSc/MPI <install_petsc>` has already been compiled, so it's possible to omit them during the installation process, and load the required modules with, say, ``module load petsc/3.11``
+- :ref:`PETSc/MPI <install_petsc>` have already been compiled, so it is strongly recommended to use the system MPI, and optionally the system PETSc. Load the required modules with, say, ``module load impi/18.0.2`` and ``module load petsc/3.11`` respectively.
 
 - :ref:`mpi4py <install_mpi4py>` is installed by default, but :ref:`petsc4py <install_petsc4py>` still needs to be installed. Do a user install for all required python packages.
 
@@ -86,6 +93,7 @@ Load the correct modules in section 1, `within the if statement`, following the 
 
    module load git/2.24.1
    module load intel/18.0.2
+   module load impi/18.0.2
    module load petsc/3.11              # If you want to use pre-compiled PETSc
 
 .. WARNING :: 
@@ -119,10 +127,13 @@ Lastly, the aliases are placed under section 3.
    # Aliases
    alias ls='ls --color=auto'
    alias myq='squeue -u <username>'
+   alias labq='squeue -A TG-DDM140001'
    alias emn='emacs -nw'
    alias jstat='scontrol show job'
    alias iknl='idev -n 68 -N 1 -m 120 -A TG-DDM140001'
    alias iskx='idev -p skx-dev -n 48 -N 1 -m 120 -A TG-DDM140001'
+   alias iskx2='idev -p skx-dev -n 96 -N 2 -m 120 -A TG-DDM140001'
+   alias iskx4='idev -p skx-dev -n 192 -N 4 -m 120 -A TG-DDM140001'
    alias myqq='showq -u'
    alias strtime='squeue --start -j'  # <jobID>, check estimated startime of your job
 
@@ -134,11 +145,10 @@ Adjust directory names as needed. If you want to use the PETSc already compiled 
 
 Running Jobs
 ------------
-Stampede2 uses Slurm as job scheduler. It is generally advised to use SKX nodes rather than KNL for running MDO Lab code, as they are more optimized for those architectures.
-
-.. NOTE ::
-
-   Your jobs will most likely stay in the queue from several hours up to a day, depending on the resources you are requesting. We do not have specific tips in this sense, except for what already reported in the User guide. Don't ask for more resources than you actually need! You can get a glimpse of Stampede 2 current usage on this `system monitor <https://portal.tacc.utexas.edu/system-monitor>`_.
+Stampede2 uses Slurm as job scheduler. 
+It is generally advised to use SKX nodes rather than KNL for running MDO Lab code, as they are more optimized for those architectures and can save substantial run time. 
+SKX nodes have fewer (48) cores per node, but each core runs at a higher clock speed. KNL has more cores per node (68), but they all run at a lower speed.
+Check the user guide for more `details <https://portal.tacc.utexas.edu/user-guides/stampede2#system-overview>`_
 
 Example run script:
 
@@ -162,8 +172,24 @@ Example run script:
 
     # Launch MPI code...
 
-    ibrun -n 240 python myscript.py   # ibrun is used instead of mpirun/mpiexec on stampede
+    ibrun python myscript.py   # ibrun is used instead of mpirun/mpiexec on stampede
 
 .. TIP ::
 
-   Interactive jobs are a useful resource. There is only a time limit (120 minutes) and you can request a high number of nodes. The queue time varies from few seconds to few minutes. Although it is not recommended to use these jobs for production (unless, for example, you have to run a set of quick ADflow runs), it is **strongly** recommended to test your run scripts here before you submit a regular job. You don't want to wait a day for your job to start and then have it crashing after a few seconds for some trivial coding mistake.
+   Run an interactive job to test your scripts before you submit a regular job via ``sbatch``, especially since the queuing time can be substantially longer than Great Lakes or other HPCs. Note that the queue for SKX nodes is longer than KNL.
+
+.. Queue and Prioritization system
+.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. Your jobs will most likely stay in the queue from several hours up to a day, depending on the resources you are requesting. 
+.. Your priority in the queue depends on your usage.
+.. It will go up if you are not a frequent user, reducing your queue time. If you try to use a lot of resources in a burst, then your priority will be significantly reduced and you might end up waiting unnecessarily long queues. 
+.. The best approach is to keep your utilization of the system as constant as possible.
+
+.. We do not have more specific tips for queuing and job requests, except for what already reported in the User guide. 
+.. Don't ask for more resources than you actually need! You can get a glimpse of Stampede 2 current usage on this `system monitor <https://portal.tacc.utexas.edu/system-monitor>`_. 
+.. Also note that the queue for SKX nodes is longer than KNL.
+
+.. .. TIP ::
+
+..    Interactive jobs are a useful resource. There is only a time limit (120 minutes) and you can request a high number of nodes. The queue time varies from few seconds to few minutes. Although it is not recommended to use these jobs for production (unless, for example, you have to run a set of quick ADflow runs), it is **strongly** recommended to test your run scripts here before you submit a regular job. You don't want to wait a day for your job to start and then have it crashing after a few seconds for some trivial coding mistake.
