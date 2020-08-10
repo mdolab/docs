@@ -1,5 +1,11 @@
 # MDO Lab Documentation #
 
+**The documentation site has moved! Please check out mdolab/MACH-Aero instead**
+
+This repository is kept for archival purposes only.
+
+-----------------------------------------------------------------------------------------------------
+
 MDO Lab public documentation repository
 Most of the docs in this repo are in reStructuredText (.rst) format and made with Sphinx.
 Some docs live in this repo, whereas others live in their respective code's repo.
